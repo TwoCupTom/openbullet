@@ -1319,8 +1319,13 @@ function renderRanks(){
 /* ============================== store ============================== */
 function renderStore(){
   const b=document.getElementById('buybtn');
-  if(S.owned){b.textContent='You own the arcade';b.classList.add('owned');b.disabled=true;
-    document.getElementById('storenote').textContent='Arcade Pass active — every current and future game is yours.';}
+  if(S.owned){
+    b.textContent='You own the arcade';b.classList.add('owned');b.disabled=true;
+    document.getElementById('storenote').textContent='Arcade Pass active — every current and future game is yours.';
+  }else{
+    b.textContent='Unlock the arcade — $2.99';b.classList.remove('owned');b.disabled=false;
+    document.getElementById('storenote').textContent='Demo build — the button simulates a purchase. The shipped app uses Apple / Google in-app purchase with server-side receipt checks.';
+  }
 }
 function buyPass(){
   if(S.owned)return;
@@ -1366,9 +1371,28 @@ function signOut(){S.signedIn=false;S.name='';S.phone='';S.smsOptIn=false;save()
 function toggleSms(){S.smsOptIn=!S.smsOptIn;save();renderProfile();
   toast(S.smsOptIn?'You’ll get new-game texts':'New-game texts off')}
 function toggleSound(){S.sound=!S.sound;save();renderProfile();sfx('tap')}
+let resetArmed=0;
 function resetAll(){
-  if(!confirm('Erase all progress, scores, characters and sign-in on this device?'))return;
-  localStorage.removeItem(KEY);location.reload();
+  const btns=document.querySelectorAll('.rowbtn.danger');
+  if(Date.now()-resetArmed>3500){
+    resetArmed=Date.now();
+    btns.forEach(b=>b.firstElementChild.textContent='Sure? Tap again to erase');
+    toast('Tap again to erase everything');
+    setTimeout(()=>{if(Date.now()-resetArmed>=3400)btns.forEach(b=>b.firstElementChild.textContent=b.closest('#profinfo')?'Erase all progress':'Reset everything to zero')},3600);
+    return;
+  }
+  resetArmed=0;
+  localStorage.removeItem(KEY);
+  Object.assign(S,{name:'',phone:'',smsOptIn:false,signedIn:false,
+    xp:0,coins:0,plays:0,owned:false,sound:true,best:{},
+    skin:'classic',skins:['classic'],pulseLvl:1,pulseBest:{}});
+  save();
+  renderHub();updateHeader();renderProfile();renderStore();renderLocker();
+  document.getElementById('f-name').value='';
+  document.getElementById('f-phone').value='';
+  document.getElementById('f-consent').checked=false;
+  btns.forEach(b=>b.firstElementChild.textContent=b.closest('#profinfo')?'Erase all progress':'Reset everything to zero');
+  toast('Fresh start — everything is back to zero');
 }
 
 /* ============================== boot ============================== */

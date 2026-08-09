@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chant Engineering Co. — If You Can Imagine It, We Can Build It</title>
+<meta name="description" content="Chant Engineering designs and manufactures heavy-duty testing machinery, proof-test systems, hydrostatic test bunkers, reeling machines and custom-engineered equipment. Family-owned in New Britain, PA since 1970.">
+<style>*{margin:0;padding:0;box-sizing:border-box}</style>
+</head>
+<body>
+<style>
+  :root{
+    /* --- Light palette (complete, on bare :root) --- */
+    --ground:#eef1f3;
+    --surface:#ffffff;
+    --surface-2:#f6f8f9;
+    --panel:#ffffff;
+    --line:#d7dde1;
+    --line-strong:#c1cad0;
+    --ink:#12171b;
+    --ink-2:#3a444c;
+    --muted:#657079;
+    --accent:#e8480f;          /* signal orange (force) */
+    --accent-ink:#ffffff;
+    --data:#0d7f8f;            /* blueprint cyan (measurement) */
+    --grid:rgba(13,127,143,.10);
+    --glow:rgba(232,72,15,.16);
+    --shadow:0 1px 2px rgba(18,23,27,.06),0 8px 30px rgba(18,23,27,.08);
+    --shadow-lg:0 2px 6px rgba(18,23,27,.08),0 24px 60px rgba(18,23,27,.14);
+    --header-bg:rgba(238,241,243,.72);
+
+    --maxw:1200px;
+    --gutter:clamp(20px,5vw,64px);
+    --r:14px;
+    --r-sm:10px;
+    --fs-display:clamp(2.9rem,7.2vw,6.4rem);
+    --fs-h2:clamp(1.9rem,3.6vw,3.1rem);
+    --fs-h3:1.28rem;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#0d1013;
+      --surface:#14181b;
+      --surface-2:#111417;
+      --panel:#151a1e;
+      --line:#242c33;
+      --line-strong:#323d46;
+      --ink:#e9edf0;
+      --ink-2:#c0c9cf;
+      --muted:#8b97a0;
+      --accent:#ff5a1f;
+      --accent-ink:#11080300;
+      --accent-ink:#160a03;
+      --data:#54d4e6;
+      --grid:rgba(84,212,230,.10);
+      --glow:rgba(255,90,31,.22);
+      --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 34px rgba(0,0,0,.44);
+      --shadow-lg:0 2px 8px rgba(0,0,0,.55),0 30px 70px rgba(0,0,0,.55);
+      --header-bg:rgba(13,16,19,.66);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0d1013;
+    --surface:#14181b;
+    --surface-2:#111417;
+    --panel:#151a1e;
+    --line:#242c33;
+    --line-strong:#323d46;
+    --ink:#e9edf0;
+    --ink-2:#c0c9cf;
+    --muted:#8b97a0;
+    --accent:#ff5a1f;
+    --accent-ink:#160a03;
+    --data:#54d4e6;
+    --grid:rgba(84,212,230,.10);
+    --glow:rgba(255,90,31,.22);
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 34px rgba(0,0,0,.44);
+    --shadow-lg:0 2px 8px rgba(0,0,0,.55),0 30px 70px rgba(0,0,0,.55);
+    --header-bg:rgba(13,16,19,.66);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:var(--sans);font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{margin:0;line-height:1.02;text-wrap:balance;letter-spacing:-.02em}
+  p{margin:0}
+  img{max-width:100%}
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+  .mono{font-family:var(--mono)}
+
+  /* --- Eyebrow / part-number tags --- */
+  .tag{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--data);display:inline-flex;align-items:center;gap:.6em;
+  }
+  .tag::before{content:"";width:26px;height:1px;background:var(--data);opacity:.7}
+  .tag.no-rule::before{display:none}
+
+  /* --- Buttons --- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.6em;font-weight:650;font-size:.95rem;
+    padding:.85em 1.4em;border-radius:100px;border:1px solid transparent;cursor:pointer;
+    transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s;
+    font-family:var(--sans);
+  }
+  .btn svg{width:16px;height:16px}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 30px var(--glow)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{border-color:var(--line-strong);color:var(--ink);background:transparent}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+  @media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+  /* ============ HEADER ============ */
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    border-bottom:1px solid transparent;transition:border-color .3s,padding .3s;
+  }
+  header.site.scrolled{border-bottom-color:var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;transition:height .3s}
+  header.site.scrolled .nav{height:60px}
+  .brand{display:flex;align-items:center;gap:.7em;font-weight:800;letter-spacing:-.03em;font-size:1.28rem}
+  .brand .mark{width:30px;height:30px;flex:none}
+  .brand small{font-family:var(--mono);font-weight:500;font-size:.6rem;letter-spacing:.24em;color:var(--muted);
+    text-transform:uppercase;display:block;margin-top:2px}
+  .brand .stack{line-height:1}
+  .nav-links{display:flex;align-items:center;gap:2px;list-style:none;margin:0;padding:0}
+  .nav-links a{
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-2);padding:.6em .9em;border-radius:8px;position:relative;transition:color .18s
+  }
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a::after{content:"";position:absolute;left:.9em;right:.9em;bottom:.4em;height:1.5px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .22s ease}
+  .nav-links a:hover::after{transform:scaleX(1)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .theme-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:border-color .2s,transform .2s}
+  .theme-btn:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+  .theme-btn svg{width:17px;height:17px}
+  .theme-btn .moon{display:none}
+  :root[data-theme="dark"] .theme-btn .sun{display:none}
+  :root[data-theme="dark"] .theme-btn .moon{display:block}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .theme-btn .sun{display:none}
+    :root:not([data-theme="light"]) .theme-btn .moon{display:block}
+  }
+  .menu-btn{display:none;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);cursor:pointer;place-items:center}
+  .menu-btn svg{width:20px;height:20px}
+  @media(max-width:920px){
+    .nav-links,.header-cta{display:none}
+    .menu-btn{display:grid}
+  }
+  /* mobile drawer */
+  .drawer{position:fixed;inset:0;z-index:60;background:var(--ground);
+    transform:translateX(100%);transition:transform .35s cubic-bezier(.5,0,.2,1);
+    display:flex;flex-direction:column;padding:26px var(--gutter)}
+  .drawer.open{transform:translateX(0)}
+  .drawer .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+  .drawer nav{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+  .drawer nav a{font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;font-size:1.1rem;
+    padding:16px 6px;border-bottom:1px solid var(--line);color:var(--ink)}
+  .drawer .btn{margin-top:26px;justify-content:center}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;padding:clamp(64px,11vw,132px) 0 clamp(50px,7vw,84px);overflow:hidden}
+  .hero-grid{position:absolute;inset:0;z-index:0;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:52px 52px;mask-image:radial-gradient(120% 90% at 70% 0%,#000 30%,transparent 78%);
+    -webkit-mask-image:radial-gradient(120% 90% at 70% 0%,#000 30%,transparent 78%)}
+  .hero-glow{position:absolute;top:-18%;right:-8%;width:60vw;height:60vw;max-width:760px;max-height:760px;z-index:0;
+    background:radial-gradient(circle,var(--glow),transparent 62%);filter:blur(10px);pointer-events:none}
+  .hero .wrap{position:relative;z-index:2}
+  .hero-inner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:center}
+  @media(max-width:920px){.hero-inner{grid-template-columns:1fr;gap:38px}}
+  .hero h1{font-size:var(--fs-display);font-weight:820;letter-spacing:-.035em;margin:.42em 0 .1em}
+  .hero h1 .em{color:var(--accent);position:relative;white-space:nowrap}
+  .hero h1 .line2{display:block}
+  .lead{font-size:clamp(1.05rem,1.5vw,1.24rem);color:var(--ink-2);max-width:46ch;margin-top:.9em}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:2em}
+  .hero-meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:2.6em;padding-top:1.6em;border-top:1px solid var(--line)}
+  .hero-meta .m{display:flex;flex-direction:column;gap:2px}
+  .hero-meta .n{font-family:var(--mono);font-size:1.7rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+    font-variant-numeric:tabular-nums}
+  .hero-meta .l{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  /* Hero gauge panel */
+  .gauge{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:24px;box-shadow:var(--shadow-lg);overflow:hidden}
+  .gauge::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;opacity:.5;pointer-events:none}
+  .gauge-head{display:flex;justify-content:space-between;align-items:center;position:relative;margin-bottom:16px}
+  .gauge-head .ttl{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .live{display:inline-flex;align-items:center;gap:.5em;font-family:var(--mono);font-size:.66rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--data)}
+  .live .dot{width:7px;height:7px;border-radius:50%;background:var(--data);box-shadow:0 0 0 0 var(--data);
+    animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(84,212,230,.5)}70%{box-shadow:0 0 0 8px rgba(84,212,230,0)}100%{box-shadow:0 0 0 0 rgba(84,212,230,0)}}
+  .readout{position:relative;text-align:center;padding:8px 0 4px}
+  .readout .val{font-family:var(--mono);font-weight:600;font-size:3rem;letter-spacing:-.02em;color:var(--ink);
+    font-variant-numeric:tabular-nums;line-height:1}
+  .readout .unit{color:var(--accent)}
+  .readout .cap{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin-top:8px}
+  .bar{position:relative;height:8px;border-radius:100px;background:var(--surface-2);border:1px solid var(--line);
+    margin-top:18px;overflow:hidden}
+  .bar span{position:absolute;inset:0;width:0;border-radius:100px;
+    background:linear-gradient(90deg,var(--data),var(--accent));transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+  .gauge-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;position:relative}
+  .gauge-foot .cell{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px}
+  .gauge-foot .cell .k{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .gauge-foot .cell .v{font-family:var(--mono);font-size:.98rem;color:var(--ink);margin-top:3px;font-variant-numeric:tabular-nums}
+
+  /* ============ MARQUEE ============ */
+  .marquee{border-block:1px solid var(--line);background:var(--surface-2);overflow:hidden;padding:14px 0}
+  .marquee .track{display:flex;gap:56px;width:max-content;animation:scroll 32s linear infinite}
+  @media (prefers-reduced-motion:reduce){.marquee .track{animation:none;flex-wrap:wrap;justify-content:center}}
+  .marquee:hover .track{animation-play-state:paused}
+  .marquee .item{display:inline-flex;align-items:center;gap:.7em;font-family:var(--mono);font-size:.82rem;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  .marquee .item svg{width:15px;height:15px;color:var(--data)}
+  @keyframes scroll{to{transform:translateX(calc(-50% - 28px))}}
+
+  /* ============ SECTIONS ============ */
+  section{position:relative}
+  .band{padding:clamp(64px,10vw,120px) 0}
+  .sec-head{max-width:640px;margin-bottom:clamp(34px,5vw,60px)}
+  .sec-head h2{font-size:var(--fs-h2);font-weight:800;margin:.5em 0 .3em}
+  .sec-head p{color:var(--ink-2);font-size:1.08rem}
+
+  /* Products grid */
+  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.prod-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.prod-grid{grid-template-columns:1fr}}
+  .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:26px 24px 24px;overflow:hidden;transition:transform .25s ease,border-color .25s,box-shadow .25s}
+  .card::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent);
+    transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+  .card:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:var(--shadow-lg)}
+  .card:hover::after{transform:scaleX(1)}
+  @media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
+  .card .idx{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--muted);
+    text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+  .card .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin:18px 0 16px;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--accent)}
+  .card .ico svg{width:24px;height:24px}
+  .card h3{font-size:var(--fs-h3);font-weight:720;margin-bottom:.4em}
+  .card p{color:var(--muted);font-size:.96rem}
+  .card .more{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--data);margin-top:16px;display:inline-flex;align-items:center;gap:.5em;
+    opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+  .card:hover .more{opacity:1;transform:translateY(0)}
+
+  /* Capabilities split */
+  .cap-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,72px);align-items:center}
+  @media(max-width:860px){.cap-wrap{grid-template-columns:1fr;gap:40px}}
+  .cap-list{display:flex;flex-direction:column;gap:2px;margin-top:14px}
+  .cap-item{display:flex;gap:18px;padding:22px 4px;border-top:1px solid var(--line)}
+  .cap-item:last-child{border-bottom:1px solid var(--line)}
+  .cap-item .num{font-family:var(--mono);font-size:.8rem;color:var(--accent);padding-top:3px;font-weight:600}
+  .cap-item h3{font-size:1.14rem;font-weight:700;margin-bottom:.3em}
+  .cap-item p{color:var(--muted);font-size:.96rem}
+  .cap-visual{position:relative;aspect-ratio:1/1.05;border-radius:var(--r);border:1px solid var(--line);
+    background:var(--surface);overflow:hidden;box-shadow:var(--shadow-lg)}
+  .cap-visual .lbl{position:absolute;top:18px;left:18px;z-index:3}
+  .cap-visual .foot{position:absolute;left:18px;right:18px;bottom:18px;z-index:3;
+    display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:.64rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .cap-visual svg.blueprint{position:absolute;inset:0;width:100%;height:100%}
+
+  /* Industries */
+  .ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:860px){.ind-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.ind-grid{grid-template-columns:1fr}}
+  .ind{position:relative;padding:22px 20px;border-radius:var(--r);border:1px solid var(--line);
+    background:var(--surface);display:flex;flex-direction:column;gap:14px;min-height:150px;
+    transition:border-color .25s,background .25s}
+  .ind:hover{border-color:var(--accent);background:var(--surface-2)}
+  .ind .ico{width:34px;height:34px;color:var(--data)}
+  .ind .ico svg{width:34px;height:34px}
+  .ind h3{font-size:1.02rem;font-weight:680;margin-top:auto}
+  .ind .n{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+  /* Services */
+  .svc-band{background:var(--surface-2);border-block:1px solid var(--line)}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  @media(max-width:820px){.svc-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.svc-grid{grid-template-columns:1fr}}
+  .svc{background:var(--surface);padding:30px 26px;transition:background .25s}
+  .svc:hover{background:var(--surface-2)}
+  .svc .ico{color:var(--accent);width:26px;height:26px;margin-bottom:16px}
+  .svc .ico svg{width:26px;height:26px}
+  .svc h3{font-size:1.08rem;font-weight:700;margin-bottom:.4em}
+  .svc p{color:var(--muted);font-size:.94rem}
+
+  /* Stats band */
+  .stats-band{background:var(--surface);border-block:1px solid var(--line);position:relative;overflow:hidden}
+  .stats-band .hero-grid{opacity:.6}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:2}
+  @media(max-width:760px){.stats-grid{grid-template-columns:1fr 1fr;gap:34px 20px}}
+  .stat{border-left:2px solid var(--accent);padding-left:18px}
+  .stat .n{font-family:var(--mono);font-weight:600;font-size:clamp(2.2rem,4.5vw,3.4rem);letter-spacing:-.03em;
+    line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+  .stat .n .u{color:var(--accent)}
+  .stat .l{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    margin-top:12px}
+
+  /* CTA */
+  .cta{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);
+    border-radius:calc(var(--r) + 6px);padding:clamp(40px,7vw,84px) clamp(28px,6vw,72px);text-align:center;
+    box-shadow:var(--shadow-lg)}
+  .cta .hero-grid{mask-image:radial-gradient(90% 120% at 50% 0%,#000,transparent 75%);
+    -webkit-mask-image:radial-gradient(90% 120% at 50% 0%,#000,transparent 75%)}
+  .cta-glow{position:absolute;left:50%;top:-40%;transform:translateX(-50%);width:70vw;height:70vw;max-width:640px;
+    max-height:640px;background:radial-gradient(circle,var(--glow),transparent 60%);z-index:0}
+  .cta .inner{position:relative;z-index:2}
+  .cta h2{font-size:var(--fs-h2);font-weight:820;margin:.5em auto .35em;max-width:16ch}
+  .cta p{color:var(--ink-2);max-width:52ch;margin:0 auto 1.8em;font-size:1.08rem}
+  .cta .hero-cta{justify-content:center}
+
+  /* Footer */
+  footer.site{background:var(--surface-2);border-top:1px solid var(--line);padding:64px 0 30px}
+  .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:36px}
+  @media(max-width:820px){.foot-top{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.foot-top{grid-template-columns:1fr}}
+  .foot-brand .brand{margin-bottom:16px}
+  .foot-brand p{color:var(--muted);font-size:.94rem;max-width:34ch}
+  .foot-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:16px;font-weight:500}
+  .foot-col a,.foot-col .li{display:block;color:var(--ink-2);font-size:.94rem;padding:5px 0;transition:color .18s}
+  .foot-col a:hover{color:var(--accent)}
+  .foot-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    margin-top:52px;padding-top:22px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted)}
+  .foot-bar .made{display:inline-flex;align-items:center;gap:.6em}
+  .flag{width:22px;height:14px;border-radius:2px;border:1px solid var(--line)}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+</style>
+
+<header class="site" id="header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Chant Engineering home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="30" height="30" rx="7" stroke="var(--accent)" stroke-width="2"/>
+        <path d="M16 6v20M6 16h20" stroke="var(--data)" stroke-width="1.5" opacity=".5"/>
+        <path d="M10 20l4-9 3 6 1.6-3H23" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="stack">CHANT<small>Engineering Co.</small></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#industries">Industries</a></li>
+      <li><a href="#services">Service</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle color theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary header-cta">Request a Quote
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <div class="top">
+    <span class="brand"><span class="stack">CHANT<small>Engineering Co.</small></span></span>
+    <button class="menu-btn" id="closeBtn" aria-label="Close menu" style="display:grid">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="#products" data-close>Products</a>
+    <a href="#capabilities" data-close>Capabilities</a>
+    <a href="#industries" data-close>Industries</a>
+    <a href="#services" data-close>Service &amp; Support</a>
+    <a href="#about" data-close>About</a>
+    <a href="#contact" data-close>Contact</a>
+  </nav>
+  <a href="#contact" class="btn btn-primary" data-close>Request a Quote</a>
+</div>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="reveal">
+          <span class="tag">EST. 1970 · New Britain, PA · Made in USA</span>
+          <h1>If you can imagine it,<span class="line2"><span class="em">we can build it.</span></span></h1>
+          <p class="lead">Chant Engineering designs and manufactures heavy-duty testing machinery, proof-test systems, and custom-engineered equipment — in-house, from concept to commissioning, for the world's most demanding industries.</p>
+          <div class="hero-cta">
+            <a href="#products" class="btn btn-primary">Explore Products
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#contact" class="btn btn-ghost">Talk to an Engineer</a>
+          </div>
+          <div class="hero-meta">
+            <div class="m"><span class="n" data-count="55" data-suffix="+">0</span><span class="l">Years of Testing</span></div>
+            <div class="m"><span class="n" data-count="7">0</span><span class="l">Product Lines</span></div>
+            <div class="m"><span class="n" data-count="6">0</span><span class="l">Industries Served</span></div>
+            <div class="m"><span class="n">GLOBAL</span><span class="l">Field Service</span></div>
+          </div>
+        </div>
+
+        <!-- Gauge panel -->
+        <div class="gauge reveal" id="gauge" aria-hidden="true">
+          <div class="gauge-head">
+            <span class="ttl">DataTEST™ · Proof Test</span>
+            <span class="live"><span class="dot"></span>Live</span>
+          </div>
+          <div class="readout">
+            <div class="val"><span data-gauge>0</span><span class="unit"> klbf</span></div>
+            <div class="cap">Applied Load · Horizontal Bed</div>
+          </div>
+          <div class="bar"><span id="gaugeBar"></span></div>
+          <div class="gauge-foot">
+            <div class="cell"><div class="k">Rate</div><div class="v">2.4 kN/s</div></div>
+            <div class="cell"><div class="k">Hold</div><div class="v">60 s</div></div>
+            <div class="cell"><div class="k">Status</div><div class="v" style="color:var(--data)">PASS</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-label="Industries served">
+    <div class="track" id="track">
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12l20-7-7 20-3-9-10-4z"/></svg>Aerospace</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>Military &amp; Defense</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6"/></svg>Oil &amp; Gas</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-5h4v5"/></svg>Construction</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 6l3 12h6l3-12M12 6V3"/></svg>Rigging</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>Entertainment</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M6 20V8h4v12M14 20V4h4v16"/></svg>Industrial</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="band" id="products">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag">Product Catalog</span>
+        <h2>Machines engineered to<br>put your product under load.</h2>
+        <p>Seven core product lines — every unit designed, machined, assembled and tested under one roof in Pennsylvania.</p>
+      </div>
+      <div class="prod-grid">
+        <article class="card reveal">
+          <div class="idx"><span>PROD-01</span><span>Force</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18M3 16h18M7 8v8M17 8v8"/><path d="M9 12h6"/></svg></div>
+          <h3>Proof Testing Machines</h3>
+          <p>Horizontal, vertical and mobile test beds for tension, compression and proof-load certification up to millions of pounds of force.</p>
+          <span class="more">Horizontal · Vertical · Mobile →</span>
+        </article>
+        <article class="card reveal">
+          <div class="idx"><span>PROD-02</span><span>Pressure</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><path d="M12 13l3-3M12 6V3M9 3h6"/></svg></div>
+          <h3>Hydrostatic Test Systems</h3>
+          <p>Fully-contained high-pressure test bunkers and stands with touch-screen control, camera systems, auto-bleed and real-time monitoring.</p>
+          <span class="more">Bunkers · Stands · Systems →</span>
+        </article>
+        <article class="card reveal">
+          <div class="idx"><span>PROD-03</span><span>Handling</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg></div>
+          <h3>Reeling Machines</h3>
+          <p>Gantry-style, re-reever and take-up / pay-out reeling machines built to spool wire rope, cable and umbilicals with precise tension control.</p>
+          <span class="more">Gantry · Re-Reever · Take-Up →</span>
+        </article>
+        <article class="card reveal">
+          <div class="idx"><span>PROD-04</span><span>Terminations</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h5M15 12h5M9 7v10M15 7v10"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></div>
+          <h3>Swagers &amp; Dies</h3>
+          <p>Hydraulic swaging machines, swaging dies, plus annealing and cutting equipment for fittings, cable terminations and rigging assemblies.</p>
+          <span class="more">Swagers · Dies · Cutting →</span>
+        </article>
+        <article class="card reveal">
+          <div class="idx"><span>PROD-05</span><span>Metrology</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 0 1 16 0"/><path d="M12 15l4-4"/><circle cx="12" cy="15" r="1.4"/></svg></div>
+          <h3>Load Cells &amp; Monitoring</h3>
+          <p>Load cells, load links, shear pins and load-monitoring equipment — calibrated instrumentation for accurate, traceable force measurement.</p>
+          <span class="more">Cells · Links · Shear Pins →</span>
+        </article>
+        <article class="card reveal">
+          <div class="idx"><span>PROD-06</span><span>Software</span></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M7 21h10"/><path d="M7 13l2 1.5L7 16" stroke="var(--data)"/></svg></div>
+          <h3>DataTEST™ Software</h3>
+          <p>Proprietary control and data-acquisition software — automated sequences, live plotting, and certified test reports at the press of a button.</p>
+          <span class="more">Control · Acquisition · Reporting →</span>
+        </article>
+      </div>
+
+      <!-- wide gov card -->
+      <article class="card reveal" style="margin-top:16px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;padding:28px">
+        <div class="ico" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div>
+          <div class="idx" style="margin-bottom:8px"><span>PROD-07 · Government &amp; Military</span></div>
+          <h3 style="margin-bottom:.3em">Defense-grade test &amp; support systems</h3>
+          <p style="color:var(--muted);max-width:60ch">Purpose-built testing equipment engineered to military specifications, with the documentation, traceability and field support defense programs demand.</p>
+        </div>
+        <a href="#contact" class="btn btn-ghost" style="white-space:nowrap">Contract Inquiry</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="band" id="capabilities" style="background:var(--surface-2);border-block:1px solid var(--line)">
+    <div class="wrap cap-wrap">
+      <div class="reveal">
+        <span class="tag">Why Chant</span>
+        <h2 style="font-size:var(--fs-h2);font-weight:800;margin:.5em 0 .3em">One roof, from<br>napkin to commissioning.</h2>
+        <p style="color:var(--ink-2);font-size:1.08rem">We're a family-owned American manufacturer that keeps engineering, machining, assembly and test integration in the same building — so nothing gets lost in a hand-off.</p>
+        <div class="cap-list">
+          <div class="cap-item"><span class="num">01</span><div><h3>Custom-engineered, not off-the-shelf</h3><p>If it doesn't exist yet, we design it. Every machine is scoped to your load, footprint and workflow.</p></div></div>
+          <div class="cap-item"><span class="num">02</span><div><h3>In-house design &amp; build</h3><p>Mechanical, hydraulic, electrical and software engineering under one roof means tighter tolerances and faster timelines.</p></div></div>
+          <div class="cap-item"><span class="num">03</span><div><h3>Traceable, certified results</h3><p>DataTEST™ acquisition and worldwide calibration deliver accurate, audit-ready documentation for every test.</p></div></div>
+        </div>
+      </div>
+      <div class="cap-visual reveal">
+        <span class="tag lbl">DWG-1970 · Assembly</span>
+        <svg class="blueprint" viewBox="0 0 400 420" fill="none" aria-hidden="true">
+          <defs><pattern id="bp" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" stroke="var(--grid)" stroke-width="1"/></pattern></defs>
+          <rect width="400" height="420" fill="url(#bp)"/>
+          <g stroke="var(--data)" stroke-width="1.4" opacity=".85">
+            <rect x="70" y="150" width="260" height="120" rx="6"/>
+            <path d="M70 210h260"/>
+            <circle cx="120" cy="210" r="26"/><circle cx="120" cy="210" r="8"/>
+            <circle cx="280" cy="210" r="26"/><circle cx="280" cy="210" r="8"/>
+            <path d="M146 210h108" stroke-dasharray="6 5"/>
+          </g>
+          <g stroke="var(--accent)" stroke-width="2">
+            <path d="M70 300h260" stroke-dasharray="2 6"/>
+            <path d="M70 296v8M330 296v8"/>
+            <path d="M200 120v-38M188 92l12-10 12 10"/>
+          </g>
+          <g fill="var(--muted)" font-family="ui-monospace,monospace" font-size="11" opacity=".8">
+            <text x="70" y="315">260.0</text>
+            <text x="205" y="78">LOAD</text>
+            <text x="300" y="145">Ø52</text>
+          </g>
+        </svg>
+        <div class="foot"><span>Scale 1:20</span><span>Rev. C</span><span>Chant Eng.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="band" id="industries">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag">Industries Served</span>
+        <h2>Trusted where failure<br>is not an option.</h2>
+        <p>From launch pads to offshore rigs to arena rigging, Chant equipment certifies the components the world depends on.</p>
+      </div>
+      <div class="ind-grid">
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l20-7-7 20-3-9-10-4z"/></svg></div><span class="n">SEC-01</span><h3>Aerospace</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><span class="n">SEC-02</span><h3>Military &amp; Defense</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6"/></svg></div><span class="n">SEC-03</span><h3>Oil &amp; Gas</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-5h4v5"/></svg></div><span class="n">SEC-04</span><h3>Construction</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 6l3 12h6l3-12M12 6V3"/></svg></div><span class="n">SEC-05</span><h3>Rigging</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5 6c4 3 10 3 14 0M5 18c4-3 10-3 14 0"/></svg></div><span class="n">SEC-06</span><h3>Entertainment</h3></div>
+        <div class="ind reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M6 20V8l5 3V8l5 3V6h2v14"/></svg></div><span class="n">SEC-07</span><h3>Industrial</h3></div>
+        <div class="ind reveal" style="border-style:dashed;justify-content:center;align-items:flex-start;background:transparent">
+          <span class="n">SEC-08</span><h3 style="color:var(--accent)">Your application →</h3>
+          <p style="color:var(--muted);font-size:.86rem;margin-top:-4px">If it needs testing, we'll build the machine for it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="band svc-band" id="services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag">Service &amp; Support</span>
+        <h2>We don't disappear<br>after delivery.</h2>
+        <p>Worldwide lifecycle support keeps your testing equipment accurate, compliant and running at peak performance.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 0 1 16 0"/><path d="M12 15l5-5"/></svg></div><h3>Calibration Services</h3><p>Traceable, worldwide calibration to keep every reading accurate and audit-ready.</p></div>
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="4"/></svg></div><h3>On-Site Technical Support</h3><p>Factory-trained technicians deployed to your facility, anywhere in the world.</p></div>
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6M3 21l3-1 11-11-2-2L4 18z"/></svg></div><h3>Machine Upgrades</h3><p>Modernize legacy equipment with new controls, DataTEST™ software and safety systems.</p></div>
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div><h3>Preventative Maintenance</h3><p>Scheduled service programs that maximize uptime and extend equipment life.</p></div>
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v10H4z"/><path d="M8 20h8M12 16v4"/><path d="M8 11l2 2 4-4" stroke="var(--data)"/></svg></div><h3>Remote Diagnostics</h3><p>Secure remote monitoring and troubleshooting to resolve issues without a truck roll.</p></div>
+        <div class="svc reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M6 10v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div><h3>Operator Training</h3><p>Hands-on training so your team runs every test safely and confidently.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-band band" id="about">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:44px">
+        <span class="tag">By the Numbers</span>
+        <h2>Half a century of<br>American engineering.</h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="n"><span data-count="1970">0</span></div><div class="l">Founded in Pennsylvania</div></div>
+        <div class="stat reveal"><div class="n"><span data-count="55">0</span><span class="u">+</span></div><div class="l">Years in the Testing Industry</div></div>
+        <div class="stat reveal"><div class="n"><span data-count="100">0</span><span class="u">%</span></div><div class="l">Designed &amp; Built In-House</div></div>
+        <div class="stat reveal"><div class="n"><span data-count="6">0</span></div><div class="l">Continents Supported</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="band" id="contact">
+    <div class="wrap">
+      <div class="cta reveal">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="cta-glow" aria-hidden="true"></div>
+        <div class="inner">
+          <span class="tag no-rule" style="justify-content:center">Let's Build It</span>
+          <h2>Tell us what you need to test.</h2>
+          <p>Send us your load, your specs, or just a sketch. Our engineers will help you scope the right machine — and if it doesn't exist yet, we'll design it.</p>
+          <div class="hero-cta">
+            <a href="mailto:info@chantengineering.com" class="btn btn-primary">Email info@chantengineering.com
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+            </a>
+            <a href="#products" class="btn btn-ghost">Browse the Catalog</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="30" height="30" rx="7" stroke="var(--accent)" stroke-width="2"/>
+            <path d="M16 6v20M6 16h20" stroke="var(--data)" stroke-width="1.5" opacity=".5"/>
+            <path d="M10 20l4-9 3 6 1.6-3H23" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="stack">CHANT<small>Engineering Co.</small></span>
+        </a>
+        <p>Family-owned American manufacturer of heavy-duty testing machinery and custom-engineered systems since 1970.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Products</h4>
+        <a href="#products">Proof Testing Machines</a>
+        <a href="#products">Hydrostatic Systems</a>
+        <a href="#products">Reeling Machines</a>
+        <a href="#products">Swagers &amp; Dies</a>
+        <a href="#products">Load Monitoring</a>
+        <a href="#products">DataTEST™ Software</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#industries">Industries</a>
+        <a href="#services">Service &amp; Support</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Request a Quote</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <span class="li">New Britain, Pennsylvania</span>
+        <span class="li">United States</span>
+        <a href="mailto:info@chantengineering.com">info@chantengineering.com</a>
+        <a href="#contact">Field service · Worldwide</a>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>© <span id="yr">2026</span> Chant Engineering Co., Inc. · All rights reserved.</span>
+      <span class="made">
+        <svg class="flag" viewBox="0 0 22 14" aria-hidden="true"><rect width="22" height="14" fill="#b22234"/><g fill="#fff"><rect y="2" width="22" height="1.1"/><rect y="4.2" width="22" height="1.1"/><rect y="6.4" width="22" height="1.1"/><rect y="8.6" width="22" height="1.1"/><rect y="10.8" width="22" height="1.1"/></g><rect width="9" height="7.5" fill="#3c3b6e"/></svg>
+        Designed &amp; Built in the USA
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  // Theme toggle
+  function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+  try{var saved=localStorage.getItem("chant-theme");if(saved)root.setAttribute("data-theme",saved);}catch(e){}
+  document.getElementById("themeBtn").addEventListener("click",function(){
+    var cur=root.getAttribute("data-theme");
+    var isDark=cur?cur==="dark":sysDark();
+    var next=isDark?"light":"dark";
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem("chant-theme",next);}catch(e){}
+  });
+
+  // Header scrolled
+  var header=document.getElementById("header");
+  var onScroll=function(){header.classList.toggle("scrolled",window.scrollY>10);};
+  onScroll();window.addEventListener("scroll",onScroll,{passive:true});
+
+  // Mobile drawer
+  var drawer=document.getElementById("drawer");
+  function setDrawer(o){drawer.classList.toggle("open",o);document.body.style.overflow=o?"hidden":"";}
+  document.getElementById("menuBtn").addEventListener("click",function(){setDrawer(true);});
+  document.getElementById("closeBtn").addEventListener("click",function(){setDrawer(false);});
+  Array.prototype.forEach.call(drawer.querySelectorAll("[data-close]"),function(a){a.addEventListener("click",function(){setDrawer(false);});});
+
+  document.getElementById("yr").textContent=new Date().getFullYear();
+
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  // Duplicate marquee for seamless loop
+  var track=document.getElementById("track");
+  if(track){track.innerHTML+=track.innerHTML;}
+
+  // Count-up
+  function countUp(el){
+    var target=parseFloat(el.getAttribute("data-count"));
+    var suffix=el.getAttribute("data-suffix")||"";
+    if(reduce){el.textContent=(target%1?target:Math.round(target))+suffix;return;}
+    var dur=1400,start=performance.now();
+    function tick(now){
+      var p=Math.min((now-start)/dur,1);
+      var e=1-Math.pow(1-p,3);
+      var v=Math.round(target*e);
+      el.textContent=v+suffix;
+      if(p<1)requestAnimationFrame(tick);else el.textContent=target+suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Reveal + trigger counters/gauge
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting)return;
+      en.target.classList.add("in");
+      en.target.querySelectorAll&&Array.prototype.forEach.call(en.target.querySelectorAll("[data-count]"),countUp);
+      io.unobserve(en.target);
+    });
+  },{threshold:.16,rootMargin:"0px 0px -8% 0px"});
+  Array.prototype.forEach.call(document.querySelectorAll(".reveal"),function(el){io.observe(el);});
+  Array.prototype.forEach.call(document.querySelectorAll(".hero .m [data-count]"),function(el){countUp(el);});
+
+  // Hero gauge animation
+  var gv=document.querySelector("[data-gauge]"),gbar=document.getElementById("gaugeBar");
+  if(gv&&gbar){
+    if(reduce){gv.textContent="248.6";gbar.style.width="83%";}
+    else{
+      var gIo=new IntersectionObserver(function(e){
+        if(e[0].isIntersecting){
+          var start=performance.now(),max=248.6;
+          function g(now){
+            var p=Math.min((now-start)/1600,1),e2=1-Math.pow(1-p,3),v=max*e2;
+            gv.textContent=v.toFixed(1);gbar.style.width=(83*e2).toFixed(1)+"%";
+            if(p<1)requestAnimationFrame(g);
+          }
+          requestAnimationFrame(g);gIo.disconnect();
+        }
+      },{threshold:.4});
+      gIo.observe(document.getElementById("gauge"));
+    }
+  }
+})();
+</script>
+</body>
+</html>
